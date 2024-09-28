@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const Nav = () => {
+ const Nav = () => {
   return (
     <>
       <nav className=" border-gray-200 bg-[black]">
@@ -58,3 +58,5 @@ export const Nav = () => {
     </>
   );
 };
+
+export default Nav;
