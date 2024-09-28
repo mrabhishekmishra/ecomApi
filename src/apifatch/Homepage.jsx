@@ -1,5 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Nav } from "./nav";
+import { Link } from "react-router-dom";
+
 
 const Homepage = () => {
   let Api = "https://dummyjson.com/products?limit=190";
@@ -15,31 +18,38 @@ const Homepage = () => {
     console.log(multyCategory)
   }
 
+  let showproduct = ()=>{
+
+    axios.get(Api).then((resp) => {
+      useproduct(...ProductData, resp.data.products);
+      
+    });
+  }
+
   useEffect(() => {
     axios.get(CategoryApi).then((resp) => {
       usecategory(resp.data);
     });
-    axios.get(Api).then((resp) => {
-      useproduct(...ProductData, resp.data.products);
-      //   console.log(ProductData)
-    });
+
+    showproduct()
+  
   }, []);
+
+
 
   return (
     <>
-      <div className="container mx-auto border border-1 p-5">
+      <div className=" bg-[black] text-[white] border border-1 p-5">
+        <Nav/>
         <div>
-          <h1 className="text-center text-[25px]  font-bold text-[red]">
-            Ecom-Api
-          </h1>
           <div className="border border-5 p-5 flex">
             <div className=" w-[25%] p-2 category ] text-center">
               <h1 className="text-[20px] font-bold ">Category</h1>
-              <ul className="my-5 p-2 border  border-1">
+              <ul className="my-5 p-2 ">
                 {CategoryData.map((v, i) => {
                   return (
                     <>
-                      <li className="flex justify-between border border-1 rounded-sm cursor-pointer p-1 text-[20px] my-2">
+                      <li className="flex justify-between hover:bg-[white] hover:text-[black]  rounded-sm cursor-pointer p-2 text-[20px] my-2">
                         <span>{v.name}</span>
                         <input type="checkbox" onClick={check}  name={v.name}/>
                       </li>
@@ -50,16 +60,21 @@ const Homepage = () => {
             </div>
             <div className=" w-[80%] border border-1 text-center p-2 list">
               <h1 className="text-[25px] font-bold  ">Product</h1>
-              <div className="border border-1 p-2 grid grid-cols-3 gap-2 mt-3 ">
+              <div className=" p-2 grid grid-cols-3 gap-2 mt-3 ">
                 {ProductData.map((v, i) => {
+                  console.log(v)
                   return (
                     <>
-                      <div className="border text-start p-2 border-1 ">
+                      <div className="border  text-start p-2 border-1 ">
                         <img src={v.thumbnail} alt="" />
                         <div>
-                            <span>Price:{v.price}</span>
-                          <h5>{v.title}</h5>
-                          <button className="cursor-pointer">Read More</button>
+                            
+                          <h5 className=" font-bold text-[20px]">{v.title}</h5>
+                          <span className=" font-bold"> Price:{v.price}</span>
+                          <p>
+                            {v.description}
+                          </p>
+                          <button className="p-2 mt-1 cursor-pointer bg-[blue] " ><Link to={`/Productdata/${v.id}`}>Read More</Link></button>
                         </div>
                       </div>
                     </>
