@@ -5,6 +5,10 @@ import Homepage from './apifatch/Homepage.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Watchlist from './apifatch/Watchlist.jsx'
 import ProductData from './apifatch/ProductData.jsx'
+import Contaxt from './contaxt/contaxt.jsx'
+import Card from './apifatch/card.jsx'
+
+//page routring
 
 let route = createBrowserRouter([
   {
@@ -18,11 +22,16 @@ let route = createBrowserRouter([
   {
     path:'/Productdata/:id',
     element: <ProductData/>
+  },
+  {
+    path:'/cart',
+    element:<Card/>
   }
 ])
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  <Contaxt>
     <RouterProvider router={route}/>
-  </StrictMode>,
+  </Contaxt>
+
 )

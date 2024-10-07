@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Nav } from "./nav";
 import { Link } from "react-router-dom";
+import { mycontaxt } from "../contaxt/contaxt";
 
 
 const Homepage = () => {
@@ -12,13 +13,48 @@ const Homepage = () => {
   const [ProductData, useproduct] = useState([]);
   const [multyCategory, usermulty]= useState([])
 
-  let check= (e)=>{
+  const {whichlist,usewhichlist} = useContext(mycontaxt)
 
-    usermulty(...multyCategory,e.target.name)
-    console.log(multyCategory)
+ 
+  
+ // add data to whichlist 
+
+ let addwhichlist = (products)=> {
+
+  let whichlistdata = {
+// get data to send whichlist
+    id:products.id,
+    title:products.title,
+    img: products.thumbnail,
+    price: products.price,
+    quantity: 1
+
   }
 
-  let showproduct = ()=>{
+  usewhichlist([...whichlist,whichlistdata]) // data update  to whichlist 
+
+ 
+ }
+//  remove data to  whichlist 
+
+let removewhichlist = (removeid)=>{
+
+  let remove = whichlist.filter((v,i)=> v.id !== removeid.id)
+  
+  usewhichlist(remove)
+
+
+  
+}
+//  multi select category 
+
+  let check= (e)=>{
+
+    usermulty(...multyCategory,e.target.name) // get check gategory name  
+   
+  }
+
+  let showproduct = ()=>{    // api fatch and show product 
 
     axios.get(Api).then((resp) => {
       useproduct(...ProductData, resp.data.products);
@@ -35,8 +71,9 @@ const Homepage = () => {
   
   }, []);
 
+  
 
-
+ 
   return (
     <>
       <div className=" bg-[black] text-[white] border border-1 p-5">
@@ -62,19 +99,24 @@ const Homepage = () => {
               <h1 className="text-[25px] font-bold  ">Product</h1>
               <div className=" p-2 grid grid-cols-3 gap-2 mt-3 ">
                 {ProductData.map((v, i) => {
-                  console.log(v)
+                  let btn = whichlist.filter((btn,id)=> btn.id == v.id) // cheak huve id ko check kr ke whichlist ke btn ko update krta hai 
+                  
                   return (
                     <>
                       <div className="border  text-start p-2 border-1 ">
                         <img src={v.thumbnail} alt="" />
-                        <div>
-                            
+                        <div>  
                           <h5 className=" font-bold text-[20px]">{v.title}</h5>
                           <span className=" font-bold"> Price:{v.price}</span>
                           <p>
                             {v.description}
                           </p>
-                          <button className="p-2 mt-1 cursor-pointer bg-[blue] " ><Link to={`/Productdata/${v.id}`}>Read More</Link></button>
+                          <button className="p-2 mt-1 cursor-pointer  bg-[blue] " ><Link to={`/Productdata/${v.id}`}>Read More</Link></button> <br/>
+                          {(btn =='') ? // agar ye true hoga to whichlist nahi to remove whichlist ka btn aayega 
+                          <button className="p-2 mt-1  cursor-pointer  bg-[green]" onClick={()=> addwhichlist(v)} >Add To Whichlist</button>
+                          :
+                          <button className="p-2 mt-1  cursor-pointer  bg-[red]" onClick={()=> removewhichlist(v)} >Remove To Whichlist</button>
+                         }
                         </div>
                       </div>
                     </>

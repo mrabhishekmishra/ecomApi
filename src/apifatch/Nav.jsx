@@ -1,10 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
 
- const Nav = () => {
+import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { mycontaxt } from "../contaxt/contaxt";
+
+export const Nav = () => {
+  //contaxt use 
+  const {whichlist,usewhichlist,Cart,usecart} = useContext(mycontaxt)
+ 
   return (
     <>
-      <nav className=" border-gray-200 bg-[black]">
+      <nav className="w-full border-gray-200 bg-[black] ">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <span className=" border border-1  text-[white] px-5 py-2 hover:bg-white hover:text-[black] text-[25px] cursor-pointer rounded-[10px]">
             <Link to='/'>Home</Link>
@@ -39,17 +44,15 @@ import { Link } from "react-router-dom";
                 <Link to="/watchlist" className=" text-[20px]  hover:border border-1 p-2 mx-2 rounded-[10px] bg-[black]"
                 >
                 
-                  Whichlist {0}
+                  Whichlist ({whichlist.length})
                 </Link>
               </li>
               <li>
-                <a
-                  href=""
-                  className=" text-[20px]  hover:border border-1 p-2 rounded-[10px]"
+              <Link to="/cart" className=" text-[20px]  hover:border border-1 p-2 mx-2 rounded-[10px] bg-[black]"
                 >
                 
-                  Card {0}
-                </a>
+                  cart ({Cart.length})
+                </Link>
               </li>
             </ul>
           </div>
@@ -58,5 +61,3 @@ import { Link } from "react-router-dom";
     </>
   );
 };
-
-export default Nav;
